@@ -513,9 +513,9 @@ const allZhFiles = fs
 
 const sourceLabels = { ...KNOWN_SOURCE_LABELS }
 const libGroups = {
-  face: { label: '脸', filters: ['分区', '发长'], files: [] },
-  costume: { label: '服装', filters: ['分类', '大类'], files: [] },
-  pose: { label: '姿势', filters: ['动作分类', '体系'], files: [] },
+  face: { label: '脸', filters: ['发长', '发型'], files: [] },
+  costume: { label: '服装', filters: ['大类', '分类'], files: [] },
+  pose: { label: '姿势', filters: ['体系', '动作分类'], files: [] },
 }
 
 for (const fileName of allZhFiles) {

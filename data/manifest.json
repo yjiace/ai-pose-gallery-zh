@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "nsfwPattern": "魅力写真|双人互动|贴身穿搭|魅力穿搭|睡衣|泳装",
+  "sourceLabels": {
+    "gia": "现实穿搭",
+    "shisei": "中国历代",
+    "charadb": "二次元·CharaDB",
+    "gia-anime": "二次元·ギア"
+  },
+  "libraries": {
+    "face": {
+      "label": "脸",
+      "filters": [
+        "分区",
+        "发长"
+      ],
+      "files": [
+        {
+          "path": "data/portrait-zh.json",
+          "hash": "ec4b25fe0beb",
+          "count": 1499
+        }
+      ],
+      "hash": "20fbdc3ba08c"
+    },
+    "costume": {
+      "label": "服装",
+      "filters": [
+        "分类",
+        "大类"
+      ],
+      "files": [
+        {
+          "path": "data/costume-zh.json",
+          "hash": "8d1dee811ec7",
+          "count": 1407,
+          "source": "gia",
+          "cat2": "现实穿搭"
+        },
+        {
+          "path": "data/costume-shisei-zh.json",
+          "hash": "6e11e9355cb8",
+          "count": 57,
+          "source": "shisei",
+          "cat2": "中国历代"
+        },
+        {
+          "path": "data/costume-anime-zh.json",
+          "hash": "7db72c31b3d9",
+          "count": 440,
+          "source": "charadb",
+          "cat2": "二次元·CharaDB"
+        },
+        {
+          "path": "data/costume-gia-anime-zh.json",
+          "hash": "5c2a1652f1a7",
+          "count": 1320,
+          "source": "gia-anime",
+          "cat2": "二次元·ギア"
+        }
+      ],
+      "hash": "d5e9b1074eca"
+    },
+    "pose": {
+      "label": "姿势",
+      "filters": [
+        "动作分类",
+        "体系"
+      ],
+      "files": [
+        {
+          "path": "data/pose-zh.json",
+          "hash": "a2bf2ee0ebe5",
+          "count": 1439
+        }
+      ],
+      "hash": "bce4c5d652c3"
+    }
+  },
+  "mapping": {
+    "pose": {},
+    "costume": {},
+    "face": {}
+  }
+}

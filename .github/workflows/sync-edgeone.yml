@@ -46,15 +46,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # 1. 将 4 个核心 JSON 数据文件写入 Git 对象库
+          # 1. 将 6 个核心 JSON 数据文件写入 Git 对象库
           POSE_BLOB=$(git hash-object -w data/pose-zh.json)
           COSTUME_BLOB=$(git hash-object -w data/costume-zh.json)
+          SHISEI_BLOB=$(git hash-object -w data/costume-shisei-zh.json)
           ANIME_BLOB=$(git hash-object -w data/costume-anime-zh.json)
+          GIA_ANIME_BLOB=$(git hash-object -w data/costume-gia-anime-zh.json)
           PORTRAIT_BLOB=$(git hash-object -w data/portrait-zh.json)
 
-          # 2. 构建仅包含上述 4 个文件的 data/ 子树（剔除日文原始 JSON 与 CSV）
-          DATA_TREE=$(printf "100644 blob %s\tcostume-anime-zh.json\n100644 blob %s\tcostume-zh.json\n100644 blob %s\tportrait-zh.json\n100644 blob %s\tpose-zh.json\n" \
-            "$ANIME_BLOB" "$COSTUME_BLOB" "$PORTRAIT_BLOB" "$POSE_BLOB" | git mktree)
+          # 2. 构建仅包含上述 6 个文件的 data/ 子树（剔除日文原始 JSON 与 CSV）
+          DATA_TREE=$(printf "100644 blob %s\tcostume-anime-zh.json\n100644 blob %s\tcostume-gia-anime-zh.json\n100644 blob %s\tcostume-shisei-zh.json\n100644 blob %s\tcostume-zh.json\n100644 blob %s\tportrait-zh.json\n100644 blob %s\tpose-zh.json\n" \
+            "$ANIME_BLOB" "$GIA_ANIME_BLOB" "$SHISEI_BLOB" "$COSTUME_BLOB" "$PORTRAIT_BLOB" "$POSE_BLOB" | git mktree)
 
           # 3. 直接复用当前提交中 thumbs/ 与 img/ 的 Git Tree 对象（零拷贝、零体积膨胀）
           THUMBS_TREE=$(git rev-parse HEAD:thumbs)

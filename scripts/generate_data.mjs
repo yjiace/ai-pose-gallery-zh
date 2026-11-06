@@ -5,6 +5,7 @@
  * - data/costume-zh.json / data/costume-meta-zh.json
  * - data/portrait-zh.json / data/portrait-meta-zh.json
  * - data/costume-anime-zh.json
+ * - data/costume-gia-anime-zh.json
  * - data/translations.csv
  * - skills/costume-reference-anime/references/catalog.csv
  */
@@ -352,6 +353,38 @@ const charaOut = charaOutfits.map((row) => {
 
 fs.writeFileSync(path.join(DATA, 'costume-anime-zh.json'), JSON.stringify(charaOut, null, 2) + '\n', 'utf8')
 
+// 5. ギア · 动漫服装翻译（复用已脱敏的 costumeOut）
+const ANIME_ORIGIN = 'https://ai-costume-anime-gallery.pages.dev/'
+const giaAnimeSnapPath = path.join(DATA, 'gia-anime', 'costume-anime.json')
+let giaAnimeOut = []
+if (fs.existsSync(giaAnimeSnapPath)) {
+  const snapBuf = fs.readFileSync(giaAnimeSnapPath)
+  const snapSha = crypto.createHash('sha256').update(snapBuf).digest('hex')
+  if (snapSha !== '7a6b353c2a57ed6064863553fb122d6cc732e4f390d6babd46d0e81f14d47f87') {
+    throw new Error('gia-anime 快照哈希不符，请先审核上游修订')
+  }
+  const baseById = new Map(costumeOut.map((r) => [r.id, r]))
+  const rows = JSON.parse(snapBuf.toString('utf8'))
+  giaAnimeOut = rows.map((row) => {
+    const rid = row.id
+    const local = baseById.get(rid)
+    if (!local) throw new Error(`Missing base costume for ${rid}`)
+    return {
+      ...local,
+      id: `gia-anime-${rid}`,
+      source: 'gia-anime',
+      一级分类: '二次元',
+      来源: 'ギア · 动漫服装',
+      来源地址: ANIME_ORIGIN,
+      缩略图: `${ANIME_ORIGIN}thumbs/${rid}.webp`,
+      预览图: `${ANIME_ORIGIN}img/${rid}.webp`,
+      原图: `${ANIME_ORIGIN}png/${rid}.png`,
+      检索: `${local['检索']} gia-anime ${rid} ギア 动漫`,
+    }
+  })
+  fs.writeFileSync(path.join(DATA, 'costume-gia-anime-zh.json'), JSON.stringify(giaAnimeOut, null, 2) + '\n', 'utf8')
+}
+
 const csvEscape = (v) => {
   const s = String(v ?? '')
   return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
@@ -421,4 +454,4 @@ if (fs.existsSync(path.dirname(catalogPath))) {
   fs.writeFileSync(catalogPath, lines.join('\r\n') + '\r\n', 'utf8')
 }
 
-console.log(`OK 姿势记录数: ${poseOut.length}, 服装记录数: ${costumeOut.length}, 二次元服装: ${charaOut.length}, 人像记录数: ${portraitOut.length}`)
+console.log(`OK 姿势记录数: ${poseOut.length}, 服装记录数: ${costumeOut.length}, 二次元服装(CharaDB): ${charaOut.length}, 二次元服装(ギア): ${giaAnimeOut.length}, 人像记录数: ${portraitOut.length}`)

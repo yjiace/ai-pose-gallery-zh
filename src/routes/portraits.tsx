@@ -1,3 +1,4 @@
+import { ZoomViewport } from '@/components/common/ZoomViewport'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import {
@@ -13,7 +14,7 @@ import {
   SearchIcon,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@/lib/notifications'
 import { portraitsQuery } from '@/api/gallery'
 import { EmptyState } from '@/components/common/EmptyState'
 import { PageHeader } from '@/components/common/PageHeader'
@@ -294,15 +295,11 @@ function PortraitsPage() {
             return (
               <div className="grid md:grid-cols-[1fr_320px]">
                 <div className="relative flex max-h-[78dvh] min-h-[min(380px,65dvh)] items-center justify-center bg-muted/60 p-4">
-                  <img
-                    src={`/${currentItem.原图}`}
-                    alt={currentItem.标题}
-                    className="max-h-[72dvh] w-auto rounded-lg object-contain"
-                  />
+                  <ZoomViewport imageUrl={`/${currentItem.原图}`} alt={currentItem.标题} className="min-h-0 h-[58dvh]" />
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full shadow"
+                    aria-label="上一张图片" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                     onClick={() => setViewerIndex((viewerIndex - 1 + filtered.length) % filtered.length)}
                   >
                     <ChevronLeftIcon className="size-4" />
@@ -310,7 +307,7 @@ function PortraitsPage() {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full shadow"
+                    aria-label="下一张图片" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                     onClick={() => setViewerIndex((viewerIndex + 1) % filtered.length)}
                   >
                     <ChevronRightIcon className="size-4" />

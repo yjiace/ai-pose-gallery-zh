@@ -24,8 +24,18 @@ export interface PoseGroup {
   order: PoseItem[]
 }
 
+export interface CostumeView {
+  id: string
+  label: string
+  缩略图: string
+  预览图: string
+  原图: string
+}
+
 export interface CostumeItem {
-  source?: 'upload' | 'charadb'
+  source?: 'upload' | 'charadb' | 'gia-anime' | 'shisei'
+  views?: CostumeView[]
+  selectedView?: string
   一级分类?: '现实' | '二次元'
   来源?: string
   来源地址?: string
@@ -162,4 +172,14 @@ export interface GenerationHistoryItem {
   prompt: string
   imageUrl: string
   recipeSummary: string
+  snapshot?: GenerationSnapshot
+}
+
+
+export interface GenerationSnapshot {
+  recipe: RecipeState
+  prompt: string
+  settings: Omit<ApiConfig, 'providers'>
+  models: Record<ImageProviderId, Pick<ProviderEndpointConfig, 'model' | 'customModel'>>
+  submittedWorkflowJson?: string
 }

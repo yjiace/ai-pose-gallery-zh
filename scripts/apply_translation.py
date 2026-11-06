@@ -53,6 +53,7 @@ for x in pose_data:
         "角度": i18n.ANGLE[x["アングル"]],
         "缩略图": x["サムネ"],
         "原图": x["原寸"],
+        "敏感": x["系統"] in ("全身1人・セクシー系", "2人絡み"),
         "检索": f'{x["id"]} {i18n.SYSTEM[x["系統"]]}{i18n.CATEGORY[x["分類"]]}{i18n.POSE[x["ポーズ名"]]}{i18n.ANGLE[x["アングル"]]}',
     })
 with open(os.path.join(DATA, "pose-zh.json"), "w", encoding="utf-8") as f:
@@ -93,6 +94,7 @@ if os.path.exists(costume_path):
             "缩略图": thumb_rel,
             "预览图": img_rel,
             "原图": img_rel,
+            "敏感": x["カテゴリ"] in ("ランジェリー", "セクシー"),
             "检索": f'{cid} {cat_zh} {name_zh} {" ".join(tags_zh)} {x["キーワード"]}',
         })
 

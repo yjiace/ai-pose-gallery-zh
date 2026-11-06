@@ -49,7 +49,7 @@ function GuidePage() {
           </p>
           <p>
             <strong className="text-foreground">2. NSFW（18+）敏感内容提示：</strong>
-            图库中包含部分成人向 3D 素体姿势（全身单人・性感系、双人缠绵）与内衣/性感穿搭参考，旨在服务绘画与动作设计练习。系统默认开启「安全模式 (SFW)」屏蔽上述分类，
+            图库中包含部分进阶 3D 素体姿势（全身单人・魅力系、双人互动）与居家/魅力穿搭参考，旨在服务绘画与动作设计练习。系统默认开启「安全模式 (SFW)」屏蔽上述分类，
             <strong className="text-rose-600 dark:text-rose-400">未满 18 周岁的未成年人严禁关闭安全模式或访问相关内容</strong>。
           </p>
           <p>

@@ -64,10 +64,10 @@ def main():
         sensitive = row["cat"] == "水着" or bool(re.search(r"bikini|swimsuit|playboy bunny|cleavage|see-through|micro bikini|underwear|lingerie|succubus|naked", tags))
         labels = list(dict.fromkeys([category] + [TAG_NAMES[word] for word in re.findall(r"[a-z]+(?:-[a-z]+)*", tags) if word in TAG_NAMES]))
         item = {"id": f"charadb-{rid}", "source": "charadb", "一级分类": "二次元", "分类": category,
-                "服装名称": name, "日文名称": row["jp"], "标签": labels, "关键词": tags,
+                "服装名称": name, "标签": labels, "关键词": tags,
                 "缩略图": f"{ORIGIN}/thumb/{rid}.webp", "预览图": f"{ORIGIN}/img/{rid}.jpg",
                 "原图": f"{ORIGIN}/img/{rid}.jpg", "来源": "たき AI · CharaDB", "来源地址": ORIGIN + "/",
-                "敏感": sensitive, "检索": f"charadb-{rid} {name} {category} {row['jp']} {tags}"}
+                "敏感": sensitive, "检索": f"charadb-{rid} {name} {category} {tags}"}
         output.append(item)
     snapshot = (json.dumps(outfits, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     provenance["outfits_sha256"] = hashlib.sha256(snapshot).hexdigest()

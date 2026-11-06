@@ -6,12 +6,12 @@ export const ANGLES = ['正面', '俯视', '仰视', '侧面', '斜侧'] as cons
 export const PREFERRED_POSE_LINE_ORDER = [
   '全身单人・标准系',
   '上半身单人',
-  '全身单人・性感系',
-  '双人缠绵',
+  '全身单人・魅力系',
+  '双人互动',
 ] as const
 
-export const NSFW_POSE_SYSTEMS = new Set(['全身单人・性感系', '双人缠绵'])
-export const NSFW_COSTUME_CATEGORIES = new Set(['内衣・睡衣', '性感穿搭'])
+export const NSFW_POSE_SYSTEMS = new Set(['全身单人・魅力系', '双人互动', '全身单人・性感系', '双人缠绵'])
+export const NSFW_COSTUME_CATEGORIES = new Set(['居家・睡衣', '魅力穿搭', '内衣・睡衣', '性感穿搭'])
 
 export function isNsfwPoseSystem(system: string): boolean {
   return NSFW_POSE_SYSTEMS.has(system)

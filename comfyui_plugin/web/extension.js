@@ -104,8 +104,8 @@ function setWidgetValue(node, name, value) {
   app.graph.setDirtyCanvas(true, true);
 }
 
-const NSFW_POSE_SYSTEMS = new Set(["全身单人・性感系", "双人缠绵"]);
-const NSFW_COSTUME_CATEGORIES = new Set(["内衣・睡衣", "性感穿搭"]);
+const NSFW_POSE_SYSTEMS = new Set(["全身单人・魅力系", "双人互动", "全身单人・性感系", "双人缠绵"]);
+const NSFW_COSTUME_CATEGORIES = new Set(["居家・睡衣", "魅力穿搭", "内衣・睡衣", "性感穿搭"]);
 
 function isItemNsfw(lib, item) {
   if (lib === "pose") return NSFW_POSE_SYSTEMS.has(item["体系"]);

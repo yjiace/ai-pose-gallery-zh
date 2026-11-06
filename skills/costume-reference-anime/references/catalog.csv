@@ -68,7 +68,7 @@ charadb-O066,宽松街头穿搭,春夏休闲,"streetwear, oversized shirt, baggy
 charadb-O067,运动街头穿搭,春夏休闲,"track jacket, crop top, shorts, sneakers, streetwear",https://charadb-2fi.pages.dev/img/O067.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O068,蝴蝶结衬衫少女风,春夏休闲,"blouse, bow, frilled blouse, skirt, pink skirt, girly",https://charadb-2fi.pages.dev/img/O068.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O069,复古波点连衣裙,春夏休闲,"retro dress, polka dot, dress, red dress, headband",https://charadb-2fi.pages.dev/img/O069.jpg,False,https://charadb-2fi.pages.dev/
-charadb-O070,透视衬衫度假穿搭,春夏休闲,"see-through shirt, open shirt, bikini under clothes, shorts, sandals, summer, beach",https://charadb-2fi.pages.dev/img/O070.jpg,True,https://charadb-2fi.pages.dev/
+charadb-O070,轻薄衬衫度假穿搭,春夏休闲,"see-through shirt, open shirt, bikini under clothes, shorts, sandals, summer, beach",https://charadb-2fi.pages.dev/img/O070.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O071,浴衣风连衣裙,春夏休闲,"dress, japanese print, summer, sandals",https://charadb-2fi.pages.dev/img/O071.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O072,牛仔外套,春夏休闲,"denim jacket, white dress, casual",https://charadb-2fi.pages.dev/img/O072.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O073,篮球风球衣,春夏休闲,"basketball uniform, jersey, shorts, sneakers",https://charadb-2fi.pages.dev/img/O073.jpg,False,https://charadb-2fi.pages.dev/
@@ -170,7 +170,7 @@ charadb-O168,圣诞老人裙,礼服与派对,"santa costume, santa hat, red dres
 charadb-O169,圣诞驯鹿裙,礼服与派对,"reindeer costume, antlers, brown dress, christmas",https://charadb-2fi.pages.dev/img/O169.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O170,经典兔女郎装,礼服与派对,"playboy bunny, rabbit ears, leotard, black leotard, pantyhose, bowtie",https://charadb-2fi.pages.dev/img/O170.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O171,白色兔女郎装,礼服与派对,"playboy bunny, rabbit ears, white leotard, fishnets, bowtie",https://charadb-2fi.pages.dev/img/O171.jpg,True,https://charadb-2fi.pages.dev/
-charadb-O172,紧身夜场礼服,礼服与派对,"dress, tight dress, short dress, cleavage, high heels, glamorous",https://charadb-2fi.pages.dev/img/O172.jpg,True,https://charadb-2fi.pages.dev/
+charadb-O172,修身晚宴礼服,礼服与派对,"dress, tight dress, short dress, cleavage, high heels, glamorous",https://charadb-2fi.pages.dev/img/O172.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O173,派对长礼服,礼服与派对,"long dress, blue dress, elegant, gloves, elbow gloves",https://charadb-2fi.pages.dev/img/O173.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O174,偶像舞台装,礼服与派对,"idol clothes, frills, mini skirt, ribbon, stage",https://charadb-2fi.pages.dev/img/O174.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O175,碎花派对裙,礼服与派对,"floral dress, dress, elegant, party",https://charadb-2fi.pages.dev/img/O175.jpg,False,https://charadb-2fi.pages.dev/
@@ -222,7 +222,7 @@ charadb-O220,泳装配游泳圈,泳装,"bikini, innertube, swimsuit, pool",https
 charadb-O221,运动比基尼,泳装,"sports bikini, bikini, swimsuit, athletic",https://charadb-2fi.pages.dev/img/O221.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O222,横条纹泳装,泳装,"striped swimsuit, one-piece swimsuit, swimsuit",https://charadb-2fi.pages.dev/img/O222.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O223,蝴蝶结泳装,泳装,"bikini, bow, ribbon, swimsuit, cute",https://charadb-2fi.pages.dev/img/O223.jpg,True,https://charadb-2fi.pages.dev/
-charadb-O224,透视泳装,泳装,"see-through, bikini, swimsuit, cover-up",https://charadb-2fi.pages.dev/img/O224.jpg,True,https://charadb-2fi.pages.dev/
+charadb-O224,薄纱罩衫泳装,泳装,"see-through, bikini, swimsuit, cover-up",https://charadb-2fi.pages.dev/img/O224.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O225,泳装配草帽,泳装,"bikini, straw hat, sun hat, swimsuit, beach",https://charadb-2fi.pages.dev/img/O225.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O226,黑色细带比基尼,泳装,"string bikini, black bikini, swimsuit",https://charadb-2fi.pages.dev/img/O226.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O227,露背连体泳装,泳装,"one-piece swimsuit, backless swimsuit, swimsuit",https://charadb-2fi.pages.dev/img/O227.jpg,True,https://charadb-2fi.pages.dev/
@@ -319,7 +319,7 @@ charadb-O317,武士装,奇幻,"samurai, japanese armor, holding katana, hakama",
 charadb-O318,公主装,奇幻,"princess, crown, ball gown, elegant",https://charadb-2fi.pages.dev/img/O318.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O319,女王装,奇幻,"queen, crown, long dress, cape, throne",https://charadb-2fi.pages.dev/img/O319.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O320,女魔王装,奇幻,"demon lord, horns, black dress, cape, crown",https://charadb-2fi.pages.dev/img/O320.jpg,False,https://charadb-2fi.pages.dev/
-charadb-O321,魅魔风装束,奇幻,"succubus, demon horns, demon wings, demon tail, black dress",https://charadb-2fi.pages.dev/img/O321.jpg,True,https://charadb-2fi.pages.dev/
+charadb-O321,暗夜恶魔翼装束,奇幻,"succubus, demon horns, demon wings, demon tail, black dress",https://charadb-2fi.pages.dev/img/O321.jpg,True,https://charadb-2fi.pages.dev/
 charadb-O322,天使装,奇幻,"angel, angel wings, halo, white dress",https://charadb-2fi.pages.dev/img/O322.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O323,堕天使装,奇幻,"fallen angel, black wings, halo, black dress",https://charadb-2fi.pages.dev/img/O323.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O324,龙娘装,奇幻,"dragon girl, dragon horns, dragon tail, scales, armor",https://charadb-2fi.pages.dev/img/O324.jpg,False,https://charadb-2fi.pages.dev/
@@ -413,7 +413,7 @@ charadb-O466,红色哥特洛丽塔,洛丽塔与地雷系,"gothic lolita, red dre
 charadb-O467,粉色甜美洛丽塔,洛丽塔与地雷系,"sweet lolita, pink dress, frills, bonnet",https://charadb-2fi.pages.dev/img/O467.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O468,棕色古典洛丽塔,洛丽塔与地雷系,"classic lolita, brown dress, lace, bow",https://charadb-2fi.pages.dev/img/O468.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O469,朋克装,洛丽塔与地雷系,"punk, leather jacket, plaid skirt, chains",https://charadb-2fi.pages.dev/img/O469.jpg,False,https://charadb-2fi.pages.dev/
-charadb-O470,绷带病娇可爱风,洛丽塔与地雷系,"yamikawa, bandages, pastel, oversized hoodie",https://charadb-2fi.pages.dev/img/O470.jpg,False,https://charadb-2fi.pages.dev/
+charadb-O470,绷带暗黑可爱风,洛丽塔与地雷系,"yamikawa, bandages, pastel, oversized hoodie",https://charadb-2fi.pages.dev/img/O470.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O471,梦幻可爱风,洛丽塔与地雷系,"yumekawa, pastel colors, frills, star, hairclips",https://charadb-2fi.pages.dev/img/O471.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O472,独角兽梦幻装,洛丽塔与地雷系,"pastel, unicorn, frills, hair bow",https://charadb-2fi.pages.dev/img/O472.jpg,False,https://charadb-2fi.pages.dev/
 charadb-O473,哥特长裙,洛丽塔与地雷系,"gothic, long dress, black dress, corset, lace",https://charadb-2fi.pages.dev/img/O473.jpg,False,https://charadb-2fi.pages.dev/

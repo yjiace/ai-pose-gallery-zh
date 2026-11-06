@@ -1,0 +1,90 @@
+name: Sync Assets to EdgeOne Branch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/**'
+      - 'thumbs/**'
+      - 'img/**'
+      - 'scripts/**'
+      - '.github/workflows/sync-edgeone.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-edgeone-branch
+  cancel-in-progress: true
+
+jobs:
+  sync-edgeone:
+    name: Build Desensitized Data & Sync to edgeone Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Generate desensitized Chinese JSON datasets
+        run: node scripts/generate_data.mjs
+
+      - name: Assemble minimal static tree and push to edgeone branch
+        env:
+          TARGET_BRANCH: edgeone
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 1. 将 4 个核心 JSON 数据文件写入 Git 对象库
+          POSE_BLOB=$(git hash-object -w data/pose-zh.json)
+          COSTUME_BLOB=$(git hash-object -w data/costume-zh.json)
+          ANIME_BLOB=$(git hash-object -w data/costume-anime-zh.json)
+          PORTRAIT_BLOB=$(git hash-object -w data/portrait-zh.json)
+
+          # 2. 构建仅包含上述 4 个文件的 data/ 子树（剔除日文原始 JSON 与 CSV）
+          DATA_TREE=$(printf "100644 blob %s\tcostume-anime-zh.json\n100644 blob %s\tcostume-zh.json\n100644 blob %s\tportrait-zh.json\n100644 blob %s\tpose-zh.json\n" \
+            "$ANIME_BLOB" "$COSTUME_BLOB" "$PORTRAIT_BLOB" "$POSE_BLOB" | git mktree)
+
+          # 3. 直接复用当前提交中 thumbs/ 与 img/ 的 Git Tree 对象（零拷贝、零体积膨胀）
+          THUMBS_TREE=$(git rev-parse HEAD:thumbs)
+          IMG_TREE=$(git rev-parse HEAD:img)
+
+          # 4. 写入 EdgeOne 静态托管所需的根目录文件
+          EDGEONE_JSON_BLOB=$(git hash-object -w scripts/edgeone/edgeone.json)
+          INDEX_HTML_BLOB=$(git hash-object -w scripts/edgeone/index.html)
+          ROBOTS_TXT_BLOB=$(git hash-object -w scripts/edgeone/robots.txt)
+
+          # 5. 组装 edgeone 分支根树
+          ROOT_TREE=$(printf "040000 tree %s\tdata\n100644 blob %s\tedgeone.json\n040000 tree %s\timg\n100644 blob %s\tindex.html\n100644 blob %s\trobots.txt\n040000 tree %s\tthumbs\n" \
+            "$DATA_TREE" "$EDGEONE_JSON_BLOB" "$IMG_TREE" "$INDEX_HTML_BLOB" "$ROBOTS_TXT_BLOB" "$THUMBS_TREE" | git mktree)
+
+          echo "Built root tree: $ROOT_TREE"
+
+          # 6. 检查远端 edgeone 分支是否已存在，若存在且目录树未变化则跳过提交
+          if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$TARGET_BRANCH:refs/remotes/origin/$TARGET_BRANCH" --depth=1
+            PARENT_COMMIT=$(git rev-parse "refs/remotes/origin/$TARGET_BRANCH")
+            EXISTING_TREE=$(git rev-parse "$PARENT_COMMIT^{tree}")
+            if [ "$EXISTING_TREE" = "$ROOT_TREE" ]; then
+              echo "No asset or data changes detected on $TARGET_BRANCH. Skipping push."
+              exit 0
+            fi
+            NEW_COMMIT=$(git commit-tree "$ROOT_TREE" -p "$PARENT_COMMIT" -m "chore(edgeone): sync static assets and desensitized data from ${GITHUB_SHA::7}")
+          else
+            NEW_COMMIT=$(git commit-tree "$ROOT_TREE" -m "chore(edgeone): initial static assets and desensitized data from ${GITHUB_SHA::7}")
+          fi
+
+          git push origin "$NEW_COMMIT:refs/heads/$TARGET_BRANCH"
+          echo "Successfully synced commit $NEW_COMMIT to branch $TARGET_BRANCH"
+

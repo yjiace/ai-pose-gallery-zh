@@ -6,6 +6,7 @@
  * - data/portrait-zh.json / data/portrait-meta-zh.json
  * - data/costume-anime-zh.json
  * - data/costume-gia-anime-zh.json
+ * - data/manifest.json
  * - data/translations.csv
  * - skills/costume-reference-anime/references/catalog.csv
  */
@@ -454,4 +455,120 @@ if (fs.existsSync(path.dirname(catalogPath))) {
   fs.writeFileSync(catalogPath, lines.join('\r\n') + '\r\n', 'utf8')
 }
 
-console.log(`OK 姿势记录数: ${poseOut.length}, 服装记录数: ${costumeOut.length}, 二次元服装(CharaDB): ${charaOut.length}, 二次元服装(ギア): ${giaAnimeOut.length}, 人像记录数: ${portraitOut.length}`)
+// 6. 自动扫描 data/*-zh.json、执行兜底敏感词净化，并生成远程配置中心 data/manifest.json
+const FALLBACK_SANITIZE_RULES = [
+  ['全身1人・性感系', '全身1人・魅力写真'],
+  ['双人缠绵', '双人互动'],
+  ['内衣・睡衣', '居家・贴身穿搭'],
+  ['性感穿搭', '魅力穿搭'],
+  ['束腰胸衣', '塑身束腰'],
+  ['低胸装', '深V领装'],
+  ['低胸', '深V领'],
+  ['露乳沟', '深V领'],
+  ['文胸', '贴身背心'],
+  ['胸罩', '贴身背心'],
+  ['内裤', '贴身短裤'],
+  ['内衣', '贴身衣物'],
+  ['情趣', '魅力'],
+  ['魅魔', '恶魔风'],
+  ['性感', '魅力'],
+  ['缠绵', '互动'],
+]
+
+function sanitizeJsonText(rawText) {
+  let out = rawText
+  for (const [from, to] of FALLBACK_SANITIZE_RULES) {
+    if (out.includes(from)) out = out.split(from).join(to)
+  }
+  return out
+}
+
+const KNOWN_SOURCE_LABELS = {
+  gia: '现实穿搭',
+  shisei: '中国历代',
+  charadb: '二次元·CharaDB',
+  'gia-anime': '二次元·ギア',
+}
+
+const FILE_SORT_ORDER = [
+  'portrait-zh.json',
+  'costume-zh.json',
+  'costume-shisei-zh.json',
+  'costume-anime-zh.json',
+  'costume-gia-anime-zh.json',
+  'pose-zh.json',
+]
+
+const allZhFiles = fs
+  .readdirSync(DATA)
+  .filter((f) => f.endsWith('-zh.json') && !f.endsWith('meta-zh.json'))
+  .sort((a, b) => {
+    const ia = FILE_SORT_ORDER.indexOf(a)
+    const ib = FILE_SORT_ORDER.indexOf(b)
+    if (ia !== -1 && ib !== -1) return ia - ib
+    if (ia !== -1) return -1
+    if (ib !== -1) return 1
+    return a.localeCompare(b)
+  })
+
+const sourceLabels = { ...KNOWN_SOURCE_LABELS }
+const libGroups = {
+  face: { label: '脸', filters: ['分区', '发长'], files: [] },
+  costume: { label: '服装', filters: ['分类', '大类'], files: [] },
+  pose: { label: '姿势', filters: ['动作分类', '体系'], files: [] },
+}
+
+for (const fileName of allZhFiles) {
+  const fullPath = path.join(DATA, fileName)
+  const rawText = fs.readFileSync(fullPath, 'utf8')
+  const cleanText = sanitizeJsonText(rawText)
+  if (cleanText !== rawText) {
+    fs.writeFileSync(fullPath, cleanText, 'utf8')
+  }
+  const fileHash = crypto.createHash('sha256').update(cleanText).digest('hex').slice(0, 12)
+  const records = JSON.parse(cleanText)
+  const sample = Array.isArray(records) && records.length > 0 ? records[0] : {}
+
+  let targetLib = null
+  if (fileName.startsWith('portrait')) targetLib = 'face'
+  else if (fileName.startsWith('costume')) targetLib = 'costume'
+  else if (fileName.startsWith('pose')) targetLib = 'pose'
+  if (!targetLib) continue
+
+  const entry = {
+    path: `data/${fileName}`,
+    hash: fileHash,
+    count: Array.isArray(records) ? records.length : 0,
+  }
+
+  if (targetLib === 'costume') {
+    const srcKey = sample.source || (fileName === 'costume-zh.json' ? 'gia' : fileName.replace(/^costume-|-zh\.json$/g, ''))
+    const inferredLabel =
+      KNOWN_SOURCE_LABELS[srcKey] ||
+      sample['大类'] ||
+      sample['来源'] ||
+      (sample['一级分类'] === '二次元' ? `二次元·${srcKey}` : sample['分类'] || '现实穿搭')
+    sourceLabels[srcKey] = inferredLabel
+    entry.source = srcKey
+    entry.cat2 = inferredLabel
+  }
+
+  libGroups[targetLib].files.push(entry)
+}
+
+for (const lib of Object.values(libGroups)) {
+  const combined = lib.files.map((f) => `${f.path}:${f.hash}`).join('|')
+  lib.hash = crypto.createHash('sha256').update(combined).digest('hex').slice(0, 12)
+}
+
+const manifest = {
+  schemaVersion: 1,
+  nsfwPattern: '魅力写真|双人互动|贴身穿搭|魅力穿搭|睡衣|泳装',
+  sourceLabels,
+  libraries: libGroups,
+  mapping: { pose: {}, costume: {}, face: {} },
+}
+
+fs.writeFileSync(path.join(DATA, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8')
+
+console.log(`OK 姿势记录数: ${poseOut.length}, 服装记录数: ${costumeOut.length}, 二次元服装(CharaDB): ${charaOut.length}, 二次元服装(ギア): ${giaAnimeOut.length}, 人像记录数: ${portraitOut.length}, 清单分库: ${Object.keys(libGroups).length}`)

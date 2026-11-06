@@ -46,17 +46,28 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # 1. 将 6 个核心 JSON 数据文件写入 Git 对象库
-          POSE_BLOB=$(git hash-object -w data/pose-zh.json)
-          COSTUME_BLOB=$(git hash-object -w data/costume-zh.json)
-          SHISEI_BLOB=$(git hash-object -w data/costume-shisei-zh.json)
-          ANIME_BLOB=$(git hash-object -w data/costume-anime-zh.json)
-          GIA_ANIME_BLOB=$(git hash-object -w data/costume-gia-anime-zh.json)
-          PORTRAIT_BLOB=$(git hash-object -w data/portrait-zh.json)
+          # 1. 根据 data/manifest.json 动态收集所有需要发布到 EdgeOne 的 JSON 数据文件（含 manifest.json 自身）
+          DATA_ENTRIES=$(node -e '
+            const fs = require("fs");
+            const { execFileSync } = require("child_process");
+            const m = JSON.parse(fs.readFileSync("data/manifest.json", "utf8"));
+            const files = new Set(["data/manifest.json"]);
+            for (const lib of Object.values(m.libraries || {})) {
+              for (const f of lib.files || []) {
+                const p = typeof f === "string" ? f : f.path;
+                if (p && p.startsWith("data/")) files.add(p);
+              }
+            }
+            const lines = [...files].sort().map((relPath) => {
+              const name = relPath.slice("data/".length);
+              const blob = execFileSync("git", ["hash-object", "-w", relPath], { encoding: "utf8" }).trim();
+              return `100644 blob ${blob}\t${name}`;
+            });
+            process.stdout.write(lines.join("\n") + "\n");
+          ')
 
-          # 2. 构建仅包含上述 6 个文件的 data/ 子树（剔除日文原始 JSON 与 CSV）
-          DATA_TREE=$(printf "100644 blob %s\tcostume-anime-zh.json\n100644 blob %s\tcostume-gia-anime-zh.json\n100644 blob %s\tcostume-shisei-zh.json\n100644 blob %s\tcostume-zh.json\n100644 blob %s\tportrait-zh.json\n100644 blob %s\tpose-zh.json\n" \
-            "$ANIME_BLOB" "$GIA_ANIME_BLOB" "$SHISEI_BLOB" "$COSTUME_BLOB" "$PORTRAIT_BLOB" "$POSE_BLOB" | git mktree)
+          # 2. 构建仅包含上述配置驱动文件的 data/ 子树（自动剔除日文原始 JSON 与 CSV）
+          DATA_TREE=$(printf "%s\n" "$DATA_ENTRIES" | git mktree)
 
           # 3. 直接复用当前提交中 thumbs/ 与 img/ 的 Git Tree 对象（零拷贝、零体积膨胀）
           THUMBS_TREE=$(git rev-parse HEAD:thumbs)

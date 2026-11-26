@@ -13,11 +13,13 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
+import { createSanitizer } from './sanitize.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const DATA = path.join(ROOT, 'data')
+const sanitizeText = createSanitizer()
 
-// 解析 scripts/i18n.py 中的字典定义
+// 解析 scripts/i18n.py 中的字典定义，并统一应用脱敏映射
 const i18nSrc = fs.readFileSync(path.join(ROOT, 'scripts', 'i18n.py'), 'utf8')
 
 function extractPyDict(name) {
@@ -28,7 +30,7 @@ function extractPyDict(name) {
   const entryRe = /"((?:[^"\\]|\\.)*)"\s*:\s*"((?:[^"\\]|\\.)*)"/g
   let em
   while ((em = entryRe.exec(m[1])) !== null) {
-    out[JSON.parse(`"${em[1]}"`)] = JSON.parse(`"${em[2]}"`)
+    out[JSON.parse(`"${em[1]}"`)] = sanitizeText(JSON.parse(`"${em[2]}"`))
   }
   return out
 }
@@ -277,7 +279,10 @@ fs.writeFileSync(
 
 // 4. CharaDB 二次元服装翻译
 const charaDir = path.join(DATA, 'charadb')
-const charaNames = JSON.parse(fs.readFileSync(path.join(charaDir, 'names-zh.json'), 'utf8'))
+const rawCharaNames = JSON.parse(fs.readFileSync(path.join(charaDir, 'names-zh.json'), 'utf8'))
+const charaNames = Object.fromEntries(
+  Object.entries(rawCharaNames).map(([k, v]) => [k, sanitizeText(v)]),
+)
 const charaOutfits = JSON.parse(fs.readFileSync(path.join(charaDir, 'outfits-public.json'), 'utf8'))
 const charaSource = JSON.parse(fs.readFileSync(path.join(charaDir, 'source.json'), 'utf8'))
 const ORIGIN = 'https://charadb-2fi.pages.dev'
@@ -455,32 +460,9 @@ if (fs.existsSync(path.dirname(catalogPath))) {
   fs.writeFileSync(catalogPath, lines.join('\r\n') + '\r\n', 'utf8')
 }
 
-// 6. 自动扫描 data/*-zh.json、执行兜底敏感词净化，并生成远程配置中心 data/manifest.json
-const FALLBACK_SANITIZE_RULES = [
-  ['全身1人・性感系', '全身1人・魅力写真'],
-  ['双人缠绵', '双人互动'],
-  ['内衣・睡衣', '居家・贴身穿搭'],
-  ['性感穿搭', '魅力穿搭'],
-  ['束腰胸衣', '塑身束腰'],
-  ['低胸装', '深V领装'],
-  ['低胸', '深V领'],
-  ['露乳沟', '深V领'],
-  ['文胸', '贴身背心'],
-  ['胸罩', '贴身背心'],
-  ['内裤', '贴身短裤'],
-  ['内衣', '贴身衣物'],
-  ['情趣', '魅力'],
-  ['魅魔', '恶魔风'],
-  ['性感', '魅力'],
-  ['缠绵', '互动'],
-]
-
+// 6. 自动扫描 data/*-zh.json、执行统一敏感词净化，并生成远程配置中心 data/manifest.json
 function sanitizeJsonText(rawText) {
-  let out = rawText
-  for (const [from, to] of FALLBACK_SANITIZE_RULES) {
-    if (out.includes(from)) out = out.split(from).join(to)
-  }
-  return out
+  return sanitizeText(rawText)
 }
 
 const KNOWN_SOURCE_LABELS = {

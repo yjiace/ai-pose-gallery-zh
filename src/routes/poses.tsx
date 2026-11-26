@@ -239,7 +239,7 @@ function PosesPage() {
             type="button"
             onClick={() =>
               requestUnlockNsfw(() => {
-                setLine('全身单人・魅力系')
+                setLine('全身单人・性感系')
                 setCategory('all')
                 setShown(60)
               })

@@ -32,7 +32,7 @@
       "files": [
         {
           "path": "data/costume-zh.json",
-          "hash": "8d1dee811ec7",
+          "hash": "27701ddbd08d",
           "count": 1407,
           "source": "gia",
           "cat2": "现实穿搭"
@@ -53,13 +53,13 @@
         },
         {
           "path": "data/costume-gia-anime-zh.json",
-          "hash": "5c2a1652f1a7",
+          "hash": "2b43960224fb",
           "count": 1320,
           "source": "gia-anime",
           "cat2": "二次元·ギア"
         }
       ],
-      "hash": "c8fa125862a3"
+      "hash": "6c242dab120c"
     },
     "pose": {
       "label": "姿势",
@@ -70,11 +70,11 @@
       "files": [
         {
           "path": "data/pose-zh.json",
-          "hash": "a2bf2ee0ebe5",
+          "hash": "9c0619047236",
           "count": 1439
         }
       ],
-      "hash": "bce4c5d652c3"
+      "hash": "31d84b6299d5"
     }
   },
   "mapping": {

@@ -673,8 +673,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
                 {t('关闭「安全模式 (SFW)」后，图库将显示包含成人向艺术参考的敏感分类：')}
               </span>
               <span className="block rounded-lg bg-muted p-2.5 text-xs text-foreground">
-                • {tn('{lib}：全身单人・魅力系（399 张）、双人互动（275 张）', { lib: <strong>{t('动作姿势库')}</strong> })}
-                <br />• {tn('{lib}：居家・睡衣（199 套）、魅力穿搭（140 套）', { lib: <strong>{t('服装穿搭库')}</strong> })}
+                • {tn('{lib}：全身单人・性感系（399 张）、双人缠绵（275 张）', { lib: <strong>{t('动作姿势库')}</strong> })}
+                <br />• {tn('{lib}：内衣・睡衣（199 套）、性感穿搭（140 套）', { lib: <strong>{t('服装穿搭库')}</strong> })}
               </span>
               <span className="block text-xs">
                 <strong>{t('免责声明')}</strong>{t('：')}
